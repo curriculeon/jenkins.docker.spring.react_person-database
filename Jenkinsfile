@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'jamesdbloom/docker-java8-maven:latest' 
-            args '-u root -p 8060:8060' 
+            args '-u root -p 2121:2121' 
         }
     }
     stages {

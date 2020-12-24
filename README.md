@@ -100,7 +100,7 @@
 #### Dockerizes and Builds Selenium Application
 1. Pulls a docker _image_ with `Git`, `Java`, and `Maven` installed.
 2. Creates a docker _container_ from the aforementioned docker _image_.
-3. `git clone`s [a selenium application](./integration-testing-application) into the container.
+3. `git clone`s [a selenium application](./integration-testing) into the container.
 4. runs `JUnit` tests of the selenium application and ignores failures on `.jar` in container by leveraging command below
 	* `mvn package -Dmaven.test.failure.ignore=true`
 6. ensures output of build is displayed by Jenkins

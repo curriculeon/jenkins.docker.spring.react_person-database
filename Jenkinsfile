@@ -11,13 +11,16 @@ pipeline {
           agent {
             docker {
               image 'jamesdbloom/docker-java8-maven:latest'
-              args '-v /root/.m2:/root/.m2 -p 8079:8079'
+              args '-v /root/.m2:/root/.m2 -p 8079:8079 -d'
             }
           }
           stages {
             stage('Set Up') {
               steps {
                 script {
+				  // sh 'ssh-keyscan -t rsa github.com >>  ~/.ssh/known_hosts'
+				  sh 'mkdir ~/.ssh/'
+				  sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
                   sh 'rm -rf jenkins.docker.spring.react_person-database'
                 }
               }
@@ -55,13 +58,15 @@ pipeline {
             stage('Set Up') {
               steps {
                 script {
-                  sh 'rm -rf jenkins.docker.spring.react_person-database'
+                    sh 'rm -rf jenkins.docker.spring.react_person-database'
                 }
               }
             }
             stage('SCM Checkout') {
               steps {
                 script {
+                  sh 'mkdir ~/.ssh/'
+				  sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
                   sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
                 }
               }
@@ -101,6 +106,8 @@ pipeline {
             stage('SCM Checkout') {
               steps {
                 script {
+                  sh 'mkdir ~/.sudo ssh/'
+				  sh 'sudo ssh-keyscan -t rsa github.com >> ~/.sudo ssh/known_hosts'
                   sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
                 }
               }

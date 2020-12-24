@@ -25,7 +25,7 @@ pipeline {
             stage('SCM Checkout') {
               steps {
                 script {
-                  sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react_person-database.git'
+                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
                 }
               }
             }
@@ -62,7 +62,7 @@ pipeline {
             stage('SCM Checkout') {
               steps {
                 script {
-                  sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react_person-database.git'
+                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
                 }
               }
             }
@@ -101,7 +101,7 @@ pipeline {
             stage('SCM Checkout') {
               steps {
                 script {
-                  sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react_person-database.git'
+                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
                 }
               }
             }

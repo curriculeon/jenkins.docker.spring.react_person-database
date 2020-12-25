@@ -1,130 +1,140 @@
+def portNumber = 8080
+
 pipeline {
-  agent none
-  stages {
-    stage('Run') {
-      parallel {
+	agent any
+	stages {
+		stage('Run') {
+			parallel {
+				// ----------------------------------------------
+				// ##############################################
+				// ##############################################
+				stage('Back-end') {
+					agent {
+						docker {
+							  image 'jamesdbloom/docker-java8-maven:latest' 
+							  args '-u root -v /root/.m2:/root/.m2 -p 8079:8079'
+						}
+					}
+					stages {
+						stage('Set Up') {
+							steps {
+								script {
+									sh 'rm -rf spring-application'
+								}
+							}
+						}
+						stage('SCM Checkout') {
+							steps {
+								sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react.selenium_person-database spring-application'
+							}
+						}
+						stage('Compile-Package-Test') {
+							steps {
+								script {
+									dir('spring-application/webservice') {
+										sh "mvn spring-boot:run &"
+										sh "sleep 60s"
+										sh "echo 'Closing Spring Application' "
+									}
+								}
+							}
+						}
+					}
+				}
+				// ##############################################
+				// ##############################################
+				// ----------------------------------------------
 
-        
-        
-        
-        stage('Back-end') {
-          agent {
-            docker {
-              image 'jamesdbloom/docker-java8-maven:latest'
-              args '-v /root/.m2:/root/.m2 -p 8079:8079 -d'
-            }
-          }
-          stages {
-            stage('Set Up') {
-              steps {
-                script {
-				  // sh 'ssh-keyscan -t rsa github.com >>  ~/.ssh/known_hosts'
-				  sh 'mkdir ~/.ssh/'
-				  sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
-                  sh 'rm -rf jenkins.docker.spring.react_person-database'
-                }
-              }
-            }
-            stage('SCM Checkout') {
-              steps {
-                script {
-                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
-                }
-              }
-            }
-            stage('Compile-Package-Test') {
-              steps {
-                script {
-                  dir('$PWD/jenkins.docker.spring.react_person-database/webservice') {
-                    sh "mvn spring-boot:run"
-                  }
-                }
-              }
-            }
-          }
-        }
 
-        
-        
-        
-        stage('Front-end') {
-          agent {
-            docker {
-              image 'node:10'
-              args '-v /root/.m2:/root/.m2 -p 3000:3000'
-            }
-          }
-          stages {
-            stage('Set Up') {
-              steps {
-                script {
-                    sh 'rm -rf jenkins.docker.spring.react_person-database'
-                }
-              }
-            }
-            stage('SCM Checkout') {
-              steps {
-                script {
-                  sh 'mkdir ~/.ssh/'
-				  sh 'ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts'
-                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
-                }
-              }
-            }
-            stage('Compile-Package-Test') {
-              steps {
-                script {
-                  dir('$PWD/jenkins.docker.spring.react_person-database') {
-                    sh "npm install"
-                    sh "npm start"
-                    sh "pause"
-                  }
-                }
-              }
-            }
-          }
-        }
 
-        
-        
-        
-        stage('Integration-Testing') {
-          agent {
-            docker {
-              image 'jamesdbloom/docker-java8-maven:latest'
-              args '-v /root/.m2:/root/.m2 -p 8050:8050'
-            }
-          }
-          stages {
-            stage('Set Up') {
-              steps {
-                script {
-                  sh 'rm -rf jenkins.docker.spring.react_person-database'
-                }
-              }
-            }
-            stage('SCM Checkout') {
-              steps {
-                script {
-                  sh 'mkdir ~/.sudo ssh/'
-				  sh 'sudo ssh-keyscan -t rsa github.com >> ~/.sudo ssh/known_hosts'
-                  sh 'git clone git@github.com:curriculeon-student/jenkins.docker.spring.react_person-database.git'
-                }
-              }
-            }
-            stage('Compile-Package-Test') {
-              steps {
-                script {
-                  dir('$PWD/jenkins.docker.spring.react_person-database/integration-testing') {
-                    sh "mvn package -Dmaven.test.failure.ignore=true"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
+
+
+
+				// ----------------------------------------------
+				// ##############################################
+				// ##############################################
+				stage('Front-end') {
+					agent {
+						docker {
+							  image 'node:10'
+							  args '-v /root/.m2:/root/.m2 -p 3000:3000' 
+						}
+					}
+					stages {
+						stage('Set Up') {
+							steps {
+								script {
+									sh 'rm -rf react-application'
+								}
+							}
+						}
+						stage('SCM Checkout') {
+							steps {
+								sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react.selenium_person-database react-application'
+							}
+						}
+						stage('Compile-Package-Test') {
+							steps {
+								script {
+									dir('react-application/client') {
+										sh "npm install"
+										sh "npm start"
+										sh "sleep 60s"
+									}
+								}
+							}
+						}
+					}
+				}
+				// ##############################################
+				// ##############################################
+				// ----------------------------------------------
+
+
+
+
+
+
+
+				// ----------------------------------------------
+				// ##############################################
+				// ##############################################
+				stage('Integrations') {
+					agent {
+						docker {
+							image 'jamesdbloom/docker-java8-maven:latest' 
+							args '-u root' 
+						}
+					}
+					stages {
+						stage('Set Up') {
+							steps {
+								script {
+									sh 'rm -rf integrations'
+								}
+							}
+						}
+						stage('SCM Checkout') {
+							steps {
+								sh 'git clone https://github.com/curriculeon-student/jenkins.docker.spring.react.selenium_person-database integrations'
+							}
+						}
+						stage('Compile-Package-Test') {
+							steps {
+								script {
+									dir('integrations/integration-testing') {
+										sh "mvn package -Dmaven.test.failure.ignore=true"
+									}
+								}
+							}
+						}
+					}
+				}
+				// ##############################################
+				// ##############################################
+				// ----------------------------------------------
+			}
+		}
+	}
 }

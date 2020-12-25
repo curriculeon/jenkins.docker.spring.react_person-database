@@ -30,7 +30,6 @@ pipeline {
                         sh "mvn spring-boot:run &"
                         sh "sleep 60s"
                         sh "echo 'Closing Spring Application' "
-						sh "kill -kill `lsof -t -i tcp:8079`"
                     }
                 }
             }

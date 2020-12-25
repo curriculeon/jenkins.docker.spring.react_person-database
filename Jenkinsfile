@@ -21,7 +21,7 @@ pipeline {
         stage('Compile-Package-Test') {
             steps {
                 script {
-                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database') {
+                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database/client') {
                         sh "npm install"
                         sh "npm start"
                     }

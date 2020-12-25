@@ -21,9 +21,10 @@ pipeline {
         stage('Compile-Package-Test') {
             steps {
                 script {
-                    dir('$PWD/react-application/client') {
+                    dir('react-application/client') {
                         sh "npm install"
                         sh "npm start"
+                        sh "sleep 60s"
                     }
                 }
             }

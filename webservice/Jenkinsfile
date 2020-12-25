@@ -1,8 +1,10 @@
+def portNumber = 8080
+
 pipeline {
     agent {
         docker {
               image 'jamesdbloom/docker-java8-maven:latest' 
-              args '-u root -v /root/.m2:/root/.m2 -p 3000:3000'
+              args '-u root -v /root/.m2:/root/.m2 -p 8079:8079'
         }
     }
     stages {
@@ -21,12 +23,14 @@ pipeline {
         stage('Compile-Package-Test') {
             steps {
                 script {
-                    dir('$PWD/spring-application/webservice') {
-                        sh 'mvn spring-boot:run &'
+                    dir('spring-application/webservice') {
+                        sh "mvn spring-boot:run &"
+                        sh "sleep 60s"
+                        sh "echo 'Closing Spring Application' "
+						sh "kill -kill `lsof -t -i tcp:8079`"
                     }
                 }
             }
         }
     }
 }
-

@@ -33,7 +33,7 @@ pipeline {
 								script {
 									dir('spring-application/webservice') {
 										sh "mvn spring-boot:run &"
-										sh "sleep 60s"
+										sh "sleep 8m"
 										sh "echo 'Closing Spring Application' "
 									}
 								}
@@ -79,8 +79,8 @@ pipeline {
 								script {
 									dir('react-application/client') {
 										sh "npm install"
-										sh "npm start"
-										sh "sleep 60s"
+										sh "npm start &"
+										sh "sleep 8m"
 									}
 								}
 							}
@@ -124,6 +124,7 @@ pipeline {
 							steps {
 								script {
 									dir('integrations/integration-testing') {
+									    sh "sleep 6m"
 										sh "mvn package -Dmaven.test.failure.ignore=true"
 									}
 								}
@@ -131,9 +132,6 @@ pipeline {
 						}
 					}
 				}
-				// ##############################################
-				// ##############################################
-				// ----------------------------------------------
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-parallel {
+pipeline {
         stage('Back-end') {
           agent {
             docker {

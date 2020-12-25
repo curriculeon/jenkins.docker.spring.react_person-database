@@ -9,19 +9,19 @@ pipeline {
         stage('Set Up') {
             steps {
                 script {
-                    sh 'rm -rf jenkins.docker.spring.react_person-database'
+                    sh 'rm -rf jenkins.docker.spring.react.selenium_person-database'
                 }
             }
         }
         stage('SCM Checkout') {
             steps {
-                sh 'git clone https://github.com/simulationpoint/jenkins.docker.spring.react_person-database $PWD/jenkins.docker.spring.react_person-database'
+                sh 'git clone https://github.com/SushilGautam/jenkins.docker.spring.react.selenium_person-database.git $PWD/jenkins.docker.spring.react.selenium_person-database'
             }
         }
         stage('Compile-Package-Test') {
             steps {
                 script {
-                    dir('$PWD/jenkins.docker.spring.react_person-database') {
+                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database') {
                         sh "mvn spring-boot:run"
                     }
                 }

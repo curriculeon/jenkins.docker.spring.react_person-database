@@ -89,7 +89,7 @@ pipeline {
                         stage('Compile-Package-Test') {
                             steps {
                                 script {
-                                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database') {
+                                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database/integration-testing') {
                                         sh "mvn package -Dmaven.test.failure.ignore=true"
                                     }
                                 }

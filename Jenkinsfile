@@ -66,6 +66,37 @@ pipeline {
                         }
                     }
                 }
+                stage('maven-selenium'){
+                    agent {
+                        docker {
+                            image 'jamesdbloom/docker-java8-maven:latest' 
+                            args '-u root -p 8040:8040' 
+                        }
+                    }   
+                    stages {
+                        stage('Set Up') {
+                            steps {
+                                script {
+                                    sh 'rm -rf jenkins.docker.spring.react.selenium_person-database'
+                                }
+                            }
+                        }
+                        stage('SCM Checkout') {
+                            steps {
+                                sh 'git clone https://github.com/SushilGautam/jenkins.docker.spring.react.selenium_person-database.git $PWD/jenkins.docker.spring.react.selenium_person-database'
+                            }
+                        }
+                        stage('Compile-Package-Test') {
+                            steps {
+                                script {
+                                    dir('$PWD/jenkins.docker.spring.react.selenium_person-database') {
+                                        sh "mvn package -Dmaven.test.failure.ignore=true"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

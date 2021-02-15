@@ -29,7 +29,7 @@ public class LandingPageTest {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.UNEXPECTED_ALERT_BEHAVIOUR, UnexpectedAlertBehaviour.IGNORE);
         this.applicationProperties = new ApplicationProperties();
-        this.driver = BrowserHandlerFactory.CHROME.getDriver(capabilities);
+        this.driver = BrowserHandlerFactory.PHANTOMJS.getDriver(capabilities);
         this.browserHandler = new BrowserHandlerLayeredLogger(driver, DirectoryReference
                 .TARGET_DIRECTORY
                 .getFileFromDirectory("Report-" + System.nanoTime() + ".html")
